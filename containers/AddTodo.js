@@ -1,4 +1,6 @@
+import { connect } from 'react-redux';
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   StyleSheet,
   Text,
@@ -6,6 +8,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {
+  addTodo,
+} from '../actions';
 
 const styles = StyleSheet.create({
   input: {
@@ -25,21 +30,27 @@ const styles = StyleSheet.create({
   },
 });
 
-const AddForm = ({ value, onChangeText, onPress, disabled }) => (
+const AddTodo = ({ text, onChangeText, dispatch }) => (
   <View>
     <TextInput
       style={styles.input}
-      value={value}
+      value={text}
       onChangeText={onChangeText}
+      onSubmitEditing={() => dispatch(addTodo(text))}
     />
     <TouchableOpacity
       style={styles.addButton}
-      onPress={onPress}
-      disabled={disabled}
+      onPress={() => dispatch(addTodo(text))}
     >
       <Text style={styles.addButtonText}>ADD</Text>
     </TouchableOpacity>
   </View>
 );
 
-export default AddForm;
+AddTodo.propTypes = {
+  text: PropTypes.string.isRequired,
+  onChangeText: PropTypes.func.isRequired,
+};
+
+
+export default connect()(AddTodo);
